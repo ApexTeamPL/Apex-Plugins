@@ -1,0 +1,1 @@
+{"name":"Message Scheduler","description":"Schedule messages to be sent at specific time or after a delay with /schedule.","authors":[{"name":"VMuser","id":"1258451646850007042"}],"main":"index.js","vendetta":{"icon":"ic_edit_24px"},"hash":"6d5ae8cb554883faca8aae1255458492b9a748e46498d0d30e3021ef775b7464"}
