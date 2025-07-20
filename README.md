@@ -6,7 +6,7 @@ Paste a plugin URL into the Plugins page of Revenge, following a basic format of
 ```
 https://apexteampl.github.io/Apex-Plugins/<PLUGIN_NAME>
 ```
-## Or just visit check plugins here!
+## Or just copy plugin links from here!
 - [Message Scheduler](https://apexteampl.github.io/Apex-Plugins/messageScheduler/) - schedule messages to be sent at specific time or after a delay! (port from Vencore)
 - [More Alts]() - use more than 5 alts at Discord and easily switch between them from chat input
 
