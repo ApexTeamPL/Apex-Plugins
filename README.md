@@ -11,7 +11,6 @@ https://apexteampl.github.io/Apex-Plugins/<PLUGIN_NAME>
 - [More Alts]() - use more than 5 alts at Discord and easily switch between them from chat input.
 - [Read All](https://apexteampl.github.io/Apex-Plugins/ReadAll) - Read all server and DM notifications with single command - /readall (idea from btmc727)
 - [BetterNSFWGateBypass]() - Allows you to access NSFW channels without setting your age. [Note](https://github.com/ApexTeamPL/Apex-Plugins/tree/master/docs/nsfwbypass)
-***Please revent it to working version PLEASE VMUSER I BEG YOU 😭**
 
 __ __
 
