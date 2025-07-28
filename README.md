@@ -1,5 +1,5 @@
 # Apex Plugins
-This repo contains my own plugins for Revenge, mostly ports from [Vencore](https://github.com/ApexTeamPL/Vencore)
+This repo contains my own plugins for Revenge.
 
 # How to install?
 Paste a plugin URL into the Plugins page of Revenge, following a basic format of:
@@ -19,3 +19,10 @@ __ __
 - ValidUser - fix mentions for unknown users showing up as '@unknown-user'.
 - PlatformSwitcher - set custom platform status (mobile, web, desktop) - also port from Vencore
 - Currently MoreAlts is in closed beta stage, for testing DM me on discord or telegram to get access to beta files. 
+
+__ __
+###  Maintainers
+- Win8.1VMUser - the creator of this project and [Vencore project](https://github.com/ApexTeamPL/Vencore), developer of those fantastic plugins!
+- Slara6804 - (it's me!), just a random girl who's too much into her Linux pharse, doing random things mostly to help people :3
+__ __
+Apex Plugins is free and open source plugin list created by Apex Team developers (simply me and VMuser).
