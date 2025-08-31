@@ -26,3 +26,5 @@ __ __
 - Slara6804 - (it's me!), just a random girl who's too much into her Linux pharse, doing random things mostly to help people :3
 __ __
 Apex Plugins is free and open source plugin list created by Apex Team developers (simply me and VMuser)[.](https://m.youtube.com/watch?v=xvFZjo5PgG0)
+__ __
+### BE AWARE OF FAKE ACCOUNTS DISTRIBUTING OUR AND OTHERS PLUGINS!!! PLEASE DOWNLOAD PLUGINS ONLY FROM OFFICAL REPOS (See [Vencore](https://raw.githubusercontent.com/ApexTeamPL/Plugins-List/refs/heads/main/offical-plugins.json) and [Purple-Eyez](https://plugins-list.pages.dev/) Plugin Browser)! THOSE ACCOUNTS HAVE BEEN FORKING OUR REPOS. FOR SECURITY REASONS WE WON'T WRITE WHO DID IT. YOU HAVE BEEN WARNED!
