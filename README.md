@@ -10,7 +10,7 @@ https://apexteampl.github.io/Apex-Plugins/<PLUGIN_NAME>
 - [Message Scheduler](https://apexteampl.github.io/Apex-Plugins/messageScheduler/) - schedule messages to be sent at specific time or after a delay! (port from Vencore) **NOTE: As mentioned by one of Revenge mods, this plugin MAY FALL under selfbotting along with the og one from vencord/vencore, thus won't be proxied and added to offical list, USE AT YOUR OWN RISK!!!**
 - [More Alts](https://apexteampl.github.io/Apex-Plugins/MoreAlts/) - use more than 5 alts at Discord and easily switch between them from chat input. [For FAQs go here](https://github.com/ApexTeamPL/Apex-Plugins/wiki/MoreAlts)
 - [Read All](https://apexteampl.github.io/Apex-Plugins/ReadAll) - Read all server and DM notifications with single command - /readall (idea from btmc727)
-- [BetterNSFWGateBypass](https://apexteampl.github.io/Apex-Plugins/nsfwbypass) - Allows you to access NSFW channels without setting your age[.](https://m.youtube.com/watch?v=xvFZjo5PgG0) [Note](https://github.com/ApexTeamPL/Apex-Plugins/tree/master/docs/nsfwbypass)
+- [BetterNSFWGateBypass](https://apexteampl.github.io/Apex-Plugins/nsfwbypass) - Allows you to access NSFW channels without setting your age[.](https://m.youtube.com/watch?v=xvFZjo5PgG0) **THIS WILL BE LATER REMOVED DUE BREAKING VENCORE TOS UNLESS REWRITTEN TO COMPLY WITH VENCORE'S TOS!!! (I did NOT write the ToS, VMuser did, so don't ask me to bring it back)** [Note](https://github.com/ApexTeamPL/Apex-Plugins/tree/master/docs/nsfwbypass)
 
 __ __
 
