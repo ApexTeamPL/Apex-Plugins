@@ -61,6 +61,11 @@ export default function patchStatus() {
       "UserCustomStatusModal",
       "SetCustomStatusModal",
       "UserStatusSettings",
+      "StatusPicker",
+      "PresenceModal",
+      "PresencePicker",
+      "EditPresence",
+      "UserPresenceSettings",
     ];
 
     const switcher = findByProps("switchAccountToken");
@@ -72,28 +77,10 @@ export default function patchStatus() {
       patches.push(
         after("render", Comp, (args, res) => {
           try {
-            const target = findInReactTree(res, (n) => {
-              try {
-                if (!n || !n.props) return false;
-                const c = n.props.children;
-                if (typeof c === "string") {
-                  return c.toLowerCase().includes("set custom") || c.toLowerCase().includes("custom status");
-                }
-                if (Array.isArray(c)) {
-                  return c.some((ch) => typeof ch === "string" && (ch.toLowerCase().includes("set custom") || ch.toLowerCase().includes("custom status")));
-                }
-                return false;
-              } catch { return false; }
-            });
-
-            if (!target) return res;
-
-            const container = target._owner?.stateNode || target.props || target;
-
             const host = findInReactTree(res, n => Array.isArray(n?.props?.children) && n.props.children.length > 0);
             const accounts = (storage.accountOrder || []).filter(id => storage.accounts[id]).map(id => storage.accounts[id]);
 
-            if (!accounts.length) return res;
+            if (!accounts.length || !host) return res;
 
             const quickSwitchElement = buildQuickSwitchUI(React, ReactNative, accounts, async (accountId) => {
               try {
@@ -112,13 +99,7 @@ export default function patchStatus() {
               }
             });
 
-            if (target.props && Array.isArray(target.props.children)) {
-              target.props.children.push(quickSwitchElement);
-            } else if (host && host.props && Array.isArray(host.props.children)) {
-              const idx = host.props.children.findIndex(c => c === target || (c && c.key === target.key));
-              if (idx >= 0) host.props.children.splice(idx + 1, 0, quickSwitchElement);
-              else host.props.children.push(quickSwitchElement);
-            }
+            host.props.children.push(quickSwitchElement);
 
           } catch (e) {
             console.error("Status render patch error:", e);
