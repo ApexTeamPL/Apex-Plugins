@@ -11,6 +11,7 @@ import { storage } from "@vendetta/plugin";
 import { React } from "@vendetta/metro/common";
 import AccountSwitcherSettings from "./Settings";
 import patchSidebar from "./SidebarPatcher";
+import patchStatus from "./StatusPatcher";
 
 const {
 	meta: { resolveSemanticColor },
@@ -120,9 +121,16 @@ export default {
 	},
 
 	onLoad() {
-		// Add sidebar patcher
+		
 		const sidebarUnpatch = patchSidebar();
 		this.patches.push(sidebarUnpatch);
+
+		try {
+			const statusUnpatch = patchStatus();
+			this.patches.push(statusUnpatch);
+		} catch (e) {
+			console.error("Status patch failed:", e);
+		}
 
 		// Context menu patch for copying tokens
 		const optionLabel = "Copy Token";
