@@ -5,7 +5,19 @@ import { findInReactTree } from "@vendetta/utils";
 import { findByProps } from "@vendetta/metro";
 import { showToast } from "@vendetta/ui/toasts";
 
-const bunny = window.bunny;
+const bunny = typeof window !== 'undefined' ? window.bunny : undefined;
+let metro = bunny?.metro;
+if (!metro) {
+  try {
+    // fallback to require if available
+    // eslint-disable-next-line no-undef
+    metro = require("@vendetta/metro");
+  } catch (e) {
+    metro = null;
+  }
+}
+const findByNameLazyMetro = metro?.findByNameLazy || metro?.findByName || null;
+const findByPropsLazyMetro = metro?.findByPropsLazy || metro?.findByProps || null;
 
 function buildQuickSwitchUI(React, ReactNative, accounts, onSwitch) {
   const { View, Text, TouchableOpacity, Image } = ReactNative;
@@ -68,16 +80,16 @@ export default function patchStatus() {
       "UserPresenceSettings",
     ];
 
-    const switcher = findByProps("switchAccountToken");
+    const switcher = findByProps("switchAccountToken") || (findByPropsLazyMetro && findByPropsLazyMetro("switchAccountToken"));
 
     for (const name of candidateNames) {
-      const Comp = bunny?.metro?.findByNameLazy?.(name, false);
+      const Comp = (findByNameLazyMetro && typeof findByNameLazyMetro === 'function') ? findByNameLazyMetro(name, false) : null;
       if (!Comp) continue;
 
       patches.push(
         after("render", Comp, (args, res) => {
           try {
-            const host = findInReactTree(res, n => Array.isArray(n?.props?.children) && n.props.children.length > 0);
+            const host = findInReactTree(res, n => Array.isArray(n?.props?.children) && n.props.children.length > 0) || findInReactTree(res, n => n?.props && n.props.children);
             const accounts = (storage.accountOrder || []).filter(id => storage.accounts[id]).map(id => storage.accounts[id]);
 
             if (!accounts.length || !host) return res;
@@ -99,7 +111,17 @@ export default function patchStatus() {
               }
             });
 
-            host.props.children.push(quickSwitchElement);
+            // avoid double-injection
+            const existing = React.Children.toArray(host.props.children).find(c => c && c.key === "quick-switch-root");
+            if (!existing) {
+              const merged = [...React.Children.toArray(host.props.children), React.cloneElement(quickSwitchElement, { key: "quick-switch-root" })];
+              try {
+                host.props.children = merged;
+              } catch (e) {
+                // fallback: attempt direct push if assignment not allowed
+                try { host.props.children.push(React.cloneElement(quickSwitchElement, { key: "quick-switch-root" })); } catch {}
+              }
+            }
 
           } catch (e) {
             console.error("Status render patch error:", e);

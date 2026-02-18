@@ -11,12 +11,22 @@ import AccountSwitcherSettings from "./Settings";
 const { FormSection, FormRow } = Forms;
 const { TableRowIcon } = findByProps("TableRowIcon");
 
-const bunny = window.bunny;
+const bunny = typeof window !== 'undefined' ? window.bunny : undefined;
+let metro = bunny?.metro;
+if (!metro) {
+    try {
+        metro = require("@vendetta/metro");
+    } catch (e) {
+        metro = null;
+    }
+}
+const findByNameLazy = metro?.findByNameLazy || metro?.findByName || null;
+const findByPropsLazy = metro?.findByPropsLazy || metro?.findByProps || null;
 
-const tabsNavigationRef = bunny?.metro?.findByPropsLazy("getRootNavigationRef");
-const settingConstants = bunny?.metro?.findByPropsLazy("SETTING_RENDERER_CONFIG");
-const SettingsOverviewScreen = bunny?.metro?.findByNameLazy("SettingsOverviewScreen", false);
-const createListModule = bunny.metro.findByPropsLazy("createList");
+const tabsNavigationRef = findByPropsLazy ? findByPropsLazy("getRootNavigationRef") : null;
+const settingConstants = findByPropsLazy ? findByPropsLazy("SETTING_RENDERER_CONFIG") : null;
+const SettingsOverviewScreen = findByNameLazy ? findByNameLazy("SettingsOverviewScreen", false) : null;
+const createListModule = findByPropsLazy ? findByPropsLazy("createList") : null;
 
 function Section({ tabs }) {
     const navigation = NavigationNative.useNavigation();
@@ -40,10 +50,14 @@ function Section({ tabs }) {
 
 function patchPanelUI(tabs, patches) {
     try {
+        if (!findByNameLazy) return;
+        const WrapperComp = findByNameLazy("UserSettingsOverviewWrapper", false);
+        if (!WrapperComp) return;
+
         patches.push(
             after(
                 "default",
-                bunny?.metro?.findByNameLazy("UserSettingsOverviewWrapper", false),
+                WrapperComp,
                 (_, ret) => {
                     const UserSettingsOverview = findInReactTree(
                         ret.props.children,
@@ -54,7 +68,7 @@ function patchPanelUI(tabs, patches) {
                         patches.push(
                             after(
                                 "render",
-                                UserSettingsOverview.type.prototype,
+                                UserSettingsOverview.type?.prototype,
                                 (_args, res) => {
                                     const sections = findInReactTree(
                                         res.props.children,
