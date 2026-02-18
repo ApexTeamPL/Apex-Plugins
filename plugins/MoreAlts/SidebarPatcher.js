@@ -12,15 +12,8 @@ const { FormSection, FormRow } = Forms;
 const { TableRowIcon } = findByProps("TableRowIcon");
 
 const bunny = typeof window !== 'undefined' ? window.bunny : undefined;
-let metro = bunny?.metro;
-if (!metro) {
-    try {
-        metro = require("@vendetta/metro");
-    } catch (e) {
-        metro = null;
-    }
-}
-const findByNameLazy = metro?.findByNameLazy || metro?.findByName || null;
+const metro = bunny?.metro;
+const findByNameLazy = metro?.findByNameLazy || metro?.byName || metro?.findByName || null;
 const findByPropsLazy = metro?.findByPropsLazy || metro?.findByProps || null;
 
 const tabsNavigationRef = findByPropsLazy ? findByPropsLazy("getRootNavigationRef") : null;
@@ -51,7 +44,7 @@ function Section({ tabs }) {
 function patchPanelUI(tabs, patches) {
     try {
         if (!findByNameLazy) return;
-        const WrapperComp = findByNameLazy("UserSettingsOverviewWrapper", false);
+        const WrapperComp = findByNameLazy("UserSettingsOverviewWrapper", false) || findByNameLazy("UserSettingsOverviewWrapper");
         if (!WrapperComp) return;
 
         patches.push(
@@ -65,10 +58,12 @@ function patchPanelUI(tabs, patches) {
                     );
 
                     if (UserSettingsOverview) {
+                        const proto = UserSettingsOverview.type?.prototype;
+                        if (!proto) return;
                         patches.push(
                             after(
                                 "render",
-                                UserSettingsOverview.type?.prototype,
+                                proto,
                                 (_args, res) => {
                                     const sections = findInReactTree(
                                         res.props.children,
