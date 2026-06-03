@@ -14,8 +14,13 @@ const { TableRowIcon } = findByProps("TableRowIcon");
 const bunny = window.bunny;
 
 const tabsNavigationRef = bunny?.metro?.findByPropsLazy("getRootNavigationRef");
-const settingConstants = bunny?.metro?.findByPropsLazy("SETTING_RENDERER_CONFIG");
-const SettingsOverviewScreen = bunny?.metro?.findByNameLazy("SettingsOverviewScreen", false);
+const settingConstants = bunny?.metro?.findByPropsLazy(
+    "SETTING_RENDERER_CONFIG",
+);
+const SettingsOverviewScreen = bunny?.metro?.findByNameLazy(
+    "SettingsOverviewScreen",
+    false,
+);
 const createListModule = bunny.metro.findByPropsLazy("createList");
 
 function Section({ tabs }) {
@@ -26,15 +31,15 @@ function Section({ tabs }) {
         leading: React.createElement(FormRow.Icon, { source: tabs.icon }),
         trailing: React.createElement(React.Fragment, {}, [
             tabs.trailing ? tabs.trailing() : null,
-            React.createElement(FormRow.Arrow, { key: "arrow" })
+            React.createElement(FormRow.Arrow, { key: "arrow" }),
         ]),
         onPress: () => {
             const Component = tabs.page;
             navigation.navigate("VendettaCustomPage", {
                 title: tabs.title(),
-                render: () => React.createElement(Component)
+                render: () => React.createElement(Component),
             });
-        }
+        },
     });
 }
 
@@ -43,11 +48,14 @@ function patchPanelUI(tabs, patches) {
         patches.push(
             after(
                 "default",
-                bunny?.metro?.findByNameLazy("UserSettingsOverviewWrapper", false),
+                bunny?.metro?.findByNameLazy(
+                    "UserSettingsOverviewWrapper",
+                    false,
+                ),
                 (_, ret) => {
                     const UserSettingsOverview = findInReactTree(
                         ret.props.children,
-                        n => n.type?.name === "UserSettingsOverview"
+                        (n) => n.type?.name === "UserSettingsOverview",
                     );
 
                     if (UserSettingsOverview) {
@@ -58,27 +66,35 @@ function patchPanelUI(tabs, patches) {
                                 (_args, res) => {
                                     const sections = findInReactTree(
                                         res.props.children,
-                                        n => n?.children?.[1]?.type === FormSection
+                                        (n) =>
+                                            n?.children?.[1]?.type ===
+                                            FormSection,
                                     )?.children;
 
                                     if (sections) {
                                         const index = sections.findIndex((c) =>
-                                            ["BILLING_SETTINGS", "PREMIUM_SETTINGS"].includes(c?.props?.label)
+                                            [
+                                                "BILLING_SETTINGS",
+                                                "PREMIUM_SETTINGS",
+                                            ].includes(c?.props?.label),
                                         );
 
                                         sections.splice(
                                             -~index || 4,
                                             0,
-                                            React.createElement(Section, { key: tabs.key, tabs })
+                                            React.createElement(Section, {
+                                                key: tabs.key,
+                                                tabs,
+                                            }),
                                         );
                                     }
-                                }
-                            )
+                                },
+                            ),
                         );
                     }
                 },
-                true
-            )
+                true,
+            ),
         );
     } catch (error) {
         logger.info("Panel UI patch failed graciously 💔", error);
@@ -87,7 +103,9 @@ function patchPanelUI(tabs, patches) {
 
 function patchTabsUI(tabs, patches) {
     if (!settingConstants || !SettingsOverviewScreen || !tabsNavigationRef) {
-        console.warn("[AccountSwitcher] Missing required constants for tabs UI patch");
+        console.warn(
+            "[AccountSwitcher] Missing required constants for tabs UI patch",
+        );
         return;
     }
 
@@ -95,13 +113,19 @@ function patchTabsUI(tabs, patches) {
     row[tabs.key] = {
         type: "pressable",
         title: tabs.title,
+        useTitle: tabs.title,
         icon: tabs.icon,
-        IconComponent: tabs.icon && (() => {
-            const actualIconSource = (typeof tabs.icon === 'object' && tabs.icon.uri !== undefined)
-                ? tabs.icon.uri
-                : tabs.icon;
-            return React.createElement(TableRowIcon, { source: actualIconSource });
-        }),
+        IconComponent:
+            tabs.icon &&
+            (() => {
+                const actualIconSource =
+                    typeof tabs.icon === "object" && tabs.icon.uri !== undefined
+                        ? tabs.icon.uri
+                        : tabs.icon;
+                return React.createElement(TableRowIcon, {
+                    source: actualIconSource,
+                });
+            }),
         usePredicate: tabs.predicate,
         useTrailing: tabs.trailing,
         onPress: () => {
@@ -110,7 +134,7 @@ function patchTabsUI(tabs, patches) {
 
             navigation.navigate("VendettaCustomPage", {
                 title: tabs.title(),
-                render: () => React.createElement(Component)
+                render: () => React.createElement(Component),
             });
         },
         withArrow: true,
@@ -125,40 +149,40 @@ function patchTabsUI(tabs, patches) {
             ...rendererConfigValue,
             ...row,
         }),
-        set: v => (rendererConfigValue = v),
+        set: (v) => (rendererConfigValue = v),
     });
 
     const firstRender = Symbol("AccountSwitcher-pinToSettings");
 
     try {
-        if(!createListModule) return;
+        if (!createListModule) return;
 
         patches.push(
             after("createList", createListModule, (args, ret) => {
-                if(!args[0][firstRender]) {
+                if (!args[0][firstRender]) {
                     args[0][firstRender] = true;
 
                     const [config] = args;
                     const sections = config.sections;
 
                     const section = sections?.find((x) =>
-                        ["Bunny", "Kettu", "Revenge"].includes(x?.label)
+                        ["Bunny", "Kettu", "Revenge"].includes(x?.label),
                     );
 
                     // If unable to find a section
-                    if(!section) {
+                    if (!section) {
                         const isMainSettings = Boolean(
-                            sections?.find((x) => 
-                                x.settings.includes("ACCOUNT")
-                            )
-                        )
-                        
-                        if(isMainSettings) {
+                            sections?.find((x) =>
+                                x.settings.includes("ACCOUNT"),
+                            ),
+                        );
+
+                        if (isMainSettings) {
                             // Add a new section to the top
                             sections.unshift({
                                 label: manifest.name,
                                 title: manifest.name,
-                                settings: [tabs.key]
+                                settings: [tabs.key],
                             });
                         }
                     }
@@ -167,47 +191,47 @@ function patchTabsUI(tabs, patches) {
                         section.settings = [...section.settings, tabs.key];
                     }
                 }
-            })
-        )
+            }),
+        );
     } catch {
         patches.push(
-        after("default", SettingsOverviewScreen, (args, ret) => {
-            if (!args[0][firstRender]) {
-                args[0][firstRender] = true;
+            after("default", SettingsOverviewScreen, (args, ret) => {
+                if (!args[0][firstRender]) {
+                    args[0][firstRender] = true;
 
-                const { sections } = findInReactTree(
-                    ret,
-                    i => i.props?.sections,
-                ).props;
-                
-                const section = sections?.find((x) => 
-                    ["Bunny", "Kettu", "Revenge"].includes(x?.label)
-                );
+                    const { sections } = findInReactTree(
+                        ret,
+                        (i) => i.props?.sections,
+                    ).props;
 
-                // If unable to find a section
-                    if(!section) {
+                    const section = sections?.find((x) =>
+                        ["Bunny", "Kettu", "Revenge"].includes(x?.label),
+                    );
+
+                    // If unable to find a section
+                    if (!section) {
                         const isMainSettings = Boolean(
-                            sections?.find((x) => 
-                                x.settings.includes("ACCOUNT")
-                            )
-                        )
-                        
-                        if(isMainSettings) {
+                            sections?.find((x) =>
+                                x.settings.includes("ACCOUNT"),
+                            ),
+                        );
+
+                        if (isMainSettings) {
                             // Add a new section to the top
                             sections.unshift({
                                 label: manifest.name,
                                 title: manifest.name,
-                                settings: [tabs.key]
+                                settings: [tabs.key],
                             });
                         }
                     }
 
-                if (section?.settings) {
-                    section.settings = [...section.settings, tabs.key];
+                    if (section?.settings) {
+                        section.settings = [...section.settings, tabs.key];
+                    }
                 }
-            }
-        })
-    );
+            }),
+        );
     }
 }
 
@@ -236,7 +260,9 @@ export default function patchSidebar() {
         return () => {};
     }
 
-    console.log("[AccountSwitcher] Patching sidebar using custom patchSettingsPin...");
+    console.log(
+        "[AccountSwitcher] Patching sidebar using custom patchSettingsPin...",
+    );
 
     try {
         const unpatch = patchSettingsPin({
@@ -249,7 +275,6 @@ export default function patchSidebar() {
 
         console.log("[AccountSwitcher] Successfully patched sidebar");
         return unpatch;
-
     } catch (error) {
         console.error("[AccountSwitcher] Failed to patch sidebar:", error);
         return () => {};
