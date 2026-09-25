@@ -1,6 +1,6 @@
 {
     "name": "Read All",
-    "description": "Read all server and DM notifications with single command - /read",
+    "description": "Read all server and DM notifications with a single button press in the guild bar",
     "authors": [
         {
             "name": "Win8.1VMUser",
@@ -9,10 +9,14 @@
         {
             "name": "btmc727",
             "id": "554071670143451176"
+        },
+        {
+            "name": "fshin",
+            "id": "1381008677301129257"
         }
     ],
-    "main": "src/index.ts",
+    "main": "src/index.tsx",
     "vendetta": {
-        "icon": "ic_edit_24px"
+        "icon": "ic_check"
     }
 }
