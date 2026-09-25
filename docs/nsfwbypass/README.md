@@ -21,7 +21,7 @@ Use it wisely as always (and don't spread it a lot or VMuser will add password a
 
 __ __
 To owner of the repo: thanks for adjustments, keep up with your plugins, they're **AWESOME**.
-> I know Kayla, I know :)
+> I know, I know :)
 
 __ __
 ### Well... NO! (let him do his polish yapping)
@@ -48,3 +48,10 @@ So it happened. **Discord is expanding its age verification worldwide...** but t
 Some dataminers of Discord's verification managed to bypass the checks using just **DevTools**! 
 Sadly I cannot do anything without direct access to the system, or can I if we had Discord web client... (**you need DevTools access, use Kiwi Browser or Termux**). Yes, really just DevTools and you're done!
 So be quick and check the *special* site to find out if the thing works. Anyway, install LoA-Tools on Termux for quicker verification :)
+
+## UPDATE SEPTEMBER 2026 - it is global...
+Yeah it is. And why I don't care? Hey! Cuz I did sth!
+So the new version actually works! Only the UK is affected (meh... Why always it's me...) but other countries? Nope, just do what I wrote above and you're done for. Oh and... **I do not expect it to stay bypassable forever... If it's worldwide, we are cooked...**
+I'm sorry but, it is the end of privacy, and I'm not even talking about Discord here, I'm talking about every app... 
+
+If you'd want to learn what you can do to still have bit of privacy, maybe check out ApexTeam's social media as I am posting there tutorials.
